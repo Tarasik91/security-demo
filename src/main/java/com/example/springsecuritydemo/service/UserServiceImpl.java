@@ -6,6 +6,8 @@ import com.example.springsecuritydemo.rest.dto.RegisterUserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -25,6 +27,11 @@ public class UserServiceImpl implements UserService {
         User user = map2User(request);
         userRepository.save(user);
         return false;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     private void validateUserRequest(RegisterUserRequest request) {
