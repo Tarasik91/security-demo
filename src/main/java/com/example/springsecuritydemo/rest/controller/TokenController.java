@@ -4,7 +4,6 @@ import com.example.springsecuritydemo.config.JwtTokenProvider;
 import com.example.springsecuritydemo.rest.dto.TokenRequest;
 import com.example.springsecuritydemo.rest.dto.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,8 +30,6 @@ public class TokenController {
 
     @PostMapping("/token")
     public ResponseEntity<TokenResponse> generateToken(@RequestBody TokenRequest request) {
-
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
