@@ -36,7 +36,6 @@ public class AppConfig {
         props.put("mail.transport.protocol", env.getRequiredProperty(MAIL_PROTOCOL_PROP));
         props.put("mail.smtp.auth", env.getRequiredProperty(MAIL_AUTH_PROP));
         props.put("mail.smtp.starttls.enable", env.getRequiredProperty(MAIL_STARTTLS_PROP));
-      //  props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.debug", true);
         return mailSender;
     }

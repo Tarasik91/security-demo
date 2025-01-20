@@ -26,6 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + userName);
         }
+        if (!user.isEnabled()) {
+            throw new UsernameNotFoundException("User username: " + userName + " is not enabled. Please check your email.");
+        }
         String[] userRoles = user.getRoles().stream().map(Role::getRole).toArray(String[]::new);
 
         return User.builder()

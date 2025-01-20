@@ -41,10 +41,8 @@ public class UserServiceImpl implements UserService {
         User user = map2User(requestDto);
         userRepository.save(user);
 
-        String appUrl = request.getContextPath();
-
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
-                request.getLocale(), appUrl));
+                request.getLocale(), getAppUrl(request)));
 
         return false;
     }
@@ -99,5 +97,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return user;
+    }
+
+    public String getAppUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }

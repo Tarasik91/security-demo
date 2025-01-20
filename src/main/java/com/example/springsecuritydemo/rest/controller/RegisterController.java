@@ -4,6 +4,7 @@ import com.example.springsecuritydemo.model.User;
 import com.example.springsecuritydemo.model.VerificationToken;
 import com.example.springsecuritydemo.rest.dto.RegisterUserRequest;
 import com.example.springsecuritydemo.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,8 +24,8 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterUserRequest request) {
-        userService.registerUser(request);
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterUserRequest dto, HttpServletRequest request) {
+        userService.registerUser(dto);
         return ResponseEntity.ok("OK");
     }
 

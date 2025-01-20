@@ -3,7 +3,6 @@ package com.example.springsecuritydemo.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +14,7 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
@@ -23,6 +23,9 @@ public class VerificationToken {
 
     @Column(name = "expire_date")
     private LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(EXPIRATION);
+
+    public VerificationToken() {
+    }
 
     public VerificationToken(String token, User user) {
         this.token = token;

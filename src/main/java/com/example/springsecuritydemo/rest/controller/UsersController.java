@@ -33,6 +33,6 @@ public class UsersController {
     }
 
     private UserResponse map2UserDto(User user) {
-        return new UserResponse(user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail());
+        return new UserResponse(user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.isEnabled());
     }
 }
