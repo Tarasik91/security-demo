@@ -3,6 +3,8 @@ package com.example.springsecuritydemo.rest.controller;
 import com.example.springsecuritydemo.config.JwtTokenProvider;
 import com.example.springsecuritydemo.rest.dto.TokenRequest;
 import com.example.springsecuritydemo.rest.dto.TokenResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class TokenController {
+    Logger logger = LoggerFactory.getLogger(TokenController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,6 +33,7 @@ public class TokenController {
 
     @PostMapping("/token")
     public ResponseEntity<TokenResponse> generateToken(@RequestBody TokenRequest request) {
+        logger.info("Create token for username=" + request.username());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );

@@ -3,6 +3,8 @@ package com.example.springsecuritydemo.rest.controller;
 import com.example.springsecuritydemo.model.User;
 import com.example.springsecuritydemo.rest.dto.UserResponse;
 import com.example.springsecuritydemo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-
+    Logger logger = LoggerFactory.getLogger(UsersController.class);
     private final UserService userService;
 
     public UsersController(UserService userService) {
@@ -24,6 +26,7 @@ public class UsersController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<UserResponse>> get() {
+        logger.info("Get Users");
         List<User> users = userService.findAll();
         List<UserResponse> response = users
                 .stream()
