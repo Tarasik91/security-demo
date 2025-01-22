@@ -18,4 +18,8 @@ public interface UserService {
     void saveRegisteredUser(User user);
 
     VerificationToken getVerificationToken(String VerificationToken);
+
+    User findByUsername(String username);
+
+    void deleteUser(Long id);
 }

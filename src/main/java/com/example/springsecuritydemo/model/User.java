@@ -18,7 +18,7 @@ public class User implements UserDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name ="username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -50,6 +50,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private VerificationToken verificationToken;
 
     public long getId() {
         return id;
@@ -142,5 +145,13 @@ public class User implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public VerificationToken getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(VerificationToken verificationToken) {
+        this.verificationToken = verificationToken;
     }
 }

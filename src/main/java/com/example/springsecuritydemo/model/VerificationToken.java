@@ -17,8 +17,9 @@ public class VerificationToken {
     @Column
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @MapsId
     @JoinColumn(nullable = false, name = "user_id")
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User user;
 
     @Column(name = "expire_date")

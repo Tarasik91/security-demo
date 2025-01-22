@@ -7,11 +7,13 @@ import com.example.springsecuritydemo.repository.UserRepository;
 import com.example.springsecuritydemo.repository.VerificationTokenRepository;
 import com.example.springsecuritydemo.rest.dto.RegisterUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
                 request.getLocale(), getAppUrl(request)));
 
-        return false;
+        return true;
     }
 
     @Override
@@ -70,11 +72,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        Optional<User> optionalIUser = userRepository.findById(id);
+        optionalIUser.ifPresent(userRepository::delete);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     private void validateUserRequest(RegisterUserRequest request) {
+        User user = findByUsername(request.getUsername());
+        if (user != null) {
+            throw new IllegalArgumentException("User exists with username");
+        }
         /*if (request.firstName().isBlank()) {
             throw new IllegalArgumentException();
         }
