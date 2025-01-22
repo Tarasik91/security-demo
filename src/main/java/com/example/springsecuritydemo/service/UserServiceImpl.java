@@ -1,6 +1,7 @@
 package com.example.springsecuritydemo.service;
 
 import com.example.springsecuritydemo.event.OnRegistrationCompleteEvent;
+import com.example.springsecuritydemo.exception.RegisterUserException;
 import com.example.springsecuritydemo.model.User;
 import com.example.springsecuritydemo.model.VerificationToken;
 import com.example.springsecuritydemo.repository.UserRepository;
@@ -8,6 +9,7 @@ import com.example.springsecuritydemo.repository.VerificationTokenRepository;
 import com.example.springsecuritydemo.rest.dto.RegisterUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerUser(RegisterUserRequest requestDto) {
         validateUserRequest(requestDto);
-        //TODO
-        //validateForExistUser(request);
         User user = map2User(requestDto);
         userRepository.save(user);
 
@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     @Transactional
     public void deleteUser(Long id) {
         Optional<User> optionalIUser = userRepository.findById(id);
@@ -89,22 +94,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUserRequest(RegisterUserRequest request) {
+        if (!EmailValidator.getInstance().isValid(request.getEmail())) {
+            throw new RegisterUserException("email #" + request.getEmail() + " is not valid");
+        }
         User user = findByUsername(request.getUsername());
         if (user != null) {
-            throw new IllegalArgumentException("User exists with username");
+            throw new RegisterUserException("Could not create user with username #" + request.getUsername());
         }
-        /*if (request.firstName().isBlank()) {
-            throw new IllegalArgumentException();
+        User emailUser = findByEmail(request.getEmail());
+        if (emailUser != null) {
+            throw new RegisterUserException("Could not create user with email #" + request.getEmail());
         }
-        if (request.lastName().isBlank()) {
-            throw new IllegalArgumentException();
-        }
-        if (request.username().isBlank()) {
-            throw new IllegalArgumentException();
-        }
-        if (request.password().isBlank()) {
-            throw new IllegalArgumentException();
-        }*/
     }
 
     private User map2User(RegisterUserRequest request) {
