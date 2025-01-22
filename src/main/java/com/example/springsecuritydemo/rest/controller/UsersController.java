@@ -36,12 +36,12 @@ public class UsersController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        logger.info("DELETE User #" + id );
+        logger.info("DELETE User #" + id);
         userService.deleteUser(id);
         return ResponseEntity.ok("Deleted");
     }
 
     private UserResponse map2UserDto(User user) {
-        return new UserResponse(user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.isEnabled());
+        return new UserResponse(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.isEnabled());
     }
 }

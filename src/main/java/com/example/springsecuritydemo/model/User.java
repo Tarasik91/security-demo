@@ -51,7 +51,7 @@ public class User implements UserDetails {
     )
     private List<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "user")
     private VerificationToken verificationToken;
 
     public long getId() {
