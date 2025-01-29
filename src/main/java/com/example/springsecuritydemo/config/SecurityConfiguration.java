@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/api/token", "/api/register").permitAll()
+                        .requestMatchers("/api/token", "/api/register", "/registration-confirm").permitAll()
                         .anyRequest().authenticated()
                         .and()
                         .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

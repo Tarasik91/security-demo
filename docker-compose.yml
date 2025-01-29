@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  postgres-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USERNAME: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /home/ec2-user/pg-data:/var/lib/postgresql/data
+
+  demo-app:
+    image: tarasuchok91/first-aws-demo:v1
+    restart: always
+    environment:
+      JWT_SECRET:
+      EMAIL_USERNAME: shurhottaras@gmail.com
+      EMAIL_PASSWORD:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USERNAME: postgres
+      POSTGRES_HOST: postgres-db
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-db
+    volumes:
+      - /home/ec2-user/logs:/logs
+
